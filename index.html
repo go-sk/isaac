@@ -61,22 +61,33 @@
     <header class="bg-isaac-dark text-white shadow-lg fixed w-full z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
             <!-- Company Name / Logo -->
-            <a href="#hero" class="text-xl font-bold tracking-widest text-isaac-gold uppercase">
-                ISAAC
+            <a href="#hero" class="text-xl font-bold tracking-widest text-isaac-gold">
+                株 式 会 社 i s a a c
             </a>
-            <!-- Navigation Links (Hidden on mobile, uses Tailwind responsive prefixes) -->
+            <!-- Navigation Links (Desktop) -->
             <nav class="hidden md:flex space-x-8 text-sm">
                 <a href="#services" class="hover:text-isaac-gold transition duration-200">事業内容</a>
                 <a href="#profile" class="hover:text-isaac-gold transition duration-200">会社概要</a>
                 <a href="#contact" class="hover:text-isaac-gold transition duration-200">お問い合わせ</a>
             </nav>
-            <!-- Simple Mobile Menu Placeholder (Not functional, but shows intent) -->
+            <!-- Mobile Menu Button -->
             <div class="md:hidden">
-                <button class="text-isaac-gold focus:outline-none">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                <!-- ハンバーガーメニューボタンにIDを追加し、開閉アイコンを準備 -->
+                <button id="mobile-menu-button" class="text-isaac-gold focus:outline-none">
+                    <!-- Hamburger icon (メニュー非表示時) -->
+                    <svg id="icon-menu" class="w-6 h-6 block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    <!-- Close icon (メニュー表示時、デフォルト非表示) -->
+                    <svg id="icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
         </div>
+        
+        <!-- Mobile Navigation Menu (初期状態はhiddenで非表示) -->
+        <nav id="mobile-menu" class="hidden md:hidden bg-gray-900 w-full">
+            <a href="#services" class="block py-3 px-4 text-center border-b border-gray-700 hover:bg-gray-700 hover:text-isaac-gold transition duration-200 text-sm">事業内容</a>
+            <a href="#profile" class="block py-3 px-4 text-center border-b border-gray-700 hover:bg-gray-700 hover:text-isaac-gold transition duration-200 text-sm">会社概要</a>
+            <a href="#contact" class="block py-3 px-4 text-center hover:bg-gray-700 hover:text-isaac-gold transition duration-200 text-sm">お問い合わせ</a>
+        </nav>
     </header>
 
     <main class="pt-20">
@@ -307,9 +318,18 @@
                                     <p>東京都台東区東上野1丁目13番7号１Ｆ</p>
                                 </div>
                             </div>
-                            <!-- Map Placeholder -->
-                            <div class="w-full h-40 bg-gray-700 flex items-center justify-center rounded mt-4">
-                                <p class="text-sm text-gray-400">地図表示エリア (Google Maps等を挿入)</p>
+                            <!-- Map Placeholder (Replaced with Google Maps iframe) -->
+                            <div class="w-full h-64 bg-gray-700 rounded mt-4 overflow-hidden">
+                                <!-- Google Maps Iframe for 〒110-0015 東京都台東区東上野1丁目13番7号１Ｆ -->
+                                <iframe 
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3239.362143048596!2d139.7766576755452!3d35.71765807258359!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188e999c0d48a3%3A0xb3551d7e2689531a!2z44CSMTEwLTAwMTUg5p2x5Lqs6YO95Y2D5Z-O5Z2C5p2x5Lqs77yS77yS77yR77yR77yQ77yT77yR77yR77yR5pm677yR!5e0!3m2!1sja!2sjp!4v1700000000000!5m2!1sja!2sjp" 
+                                    width="100%" 
+                                    height="256" 
+                                    style="border:0;" 
+                                    allowfullscreen="" 
+                                    loading="lazy" 
+                                    referrerpolicy="no-referrer-when-downgrade">
+                                </iframe>
                             </div>
                         </div>
                     </div>
@@ -327,6 +347,39 @@
         </div>
     </footer>
 
+    <!-- JavaScript for Mobile Menu Functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const button = document.getElementById('mobile-menu-button');
+            const menu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('icon-menu');
+            const closeIcon = document.getElementById('icon-close');
+            
+            // モバイルメニュー内の全てのナビゲーションリンクを取得
+            const links = menu.querySelectorAll('a');
+
+            if (button && menu && menuIcon && closeIcon) {
+                // メニューの表示/非表示とアイコンの切り替えを行う関数
+                const toggleMenu = () => {
+                    menu.classList.toggle('hidden');
+                    menuIcon.classList.toggle('hidden');
+                    closeIcon.classList.toggle('hidden');
+                };
+
+                // 1. ボタンクリックでメニューをトグル
+                button.addEventListener('click', toggleMenu);
+
+                // 2. メニュー内のリンクをクリックした際にメニューを閉じる
+                links.forEach(link => {
+                    link.addEventListener('click', () => {
+                        // メニューが表示されている場合のみ閉じる
+                        if (!menu.classList.contains('hidden')) {
+                            toggleMenu();
+                        }
+                    });
+                });
+            }
+        });
+    </script>
 </body>
 </html>
-
